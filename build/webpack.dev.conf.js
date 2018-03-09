@@ -31,7 +31,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
-    host: HOST || config.dev.host,
+    // host: HOST || config.dev.host,
+    host: '192.168.73.96',
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay
@@ -64,7 +65,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new webpack.LoaderOptionsPlugin({
+      // webpack 2.0之后， 此配置不能直接写在自定义配置项中， 必须写在此处
+      vue: {
+        postcss: [require('postcss-pxtorem')({
+          rootValue: 75,
+          unitPrecision: 6,
+          propList: ['!font-size', '*'],
+          minPixelValue: 1,
+        }),
+        ]
+      },
+    })
   ]
 })
 
